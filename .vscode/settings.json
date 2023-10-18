@@ -1,3 +1,14 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "clsx",
+    "formik",
+    "Formik",
+    "heroicons",
+    "messageformat",
+    "nextui",
+    "tailwindcss",
+    "Uturn"
+  ],
+  "conventionalCommits.scopes": ["match"]
 }
