@@ -7,8 +7,10 @@
     "heroicons",
     "messageformat",
     "nextui",
+    "splashscreen",
+    "splashscreens",
     "tailwindcss",
     "Uturn"
   ],
-  "conventionalCommits.scopes": ["match"]
+  "conventionalCommits.scopes": ["match", "pwa"]
 }

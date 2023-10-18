@@ -3,7 +3,9 @@ import "@/styles/globals.scss";
 import { Link } from "@nextui-org/link";
 import { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
+import { PropsWithChildren } from "react";
 import { Providers } from "./providers";
+import { Seo } from "@/components/seo";
 import clsx from "clsx";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
@@ -25,14 +27,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <Seo />
       <body
         className={clsx(
           "min-h-screen bg-background font-sans antialiased",

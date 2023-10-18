@@ -8,7 +8,7 @@ import {
   Navbar as NextUINavbar,
 } from "@nextui-org/navbar";
 
-import { Button } from "@nextui-org/button";
+import Image from "next/image";
 import { Input } from "@nextui-org/input";
 import { Link } from "@nextui-org/link";
 import { Logo } from "@/components/icons";
@@ -39,10 +39,16 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink
-            className="flex justify-start items-center gap-1"
+            className="flex justify-start items-center gap-1 group"
             href={Routes.HOME.path}
           >
-            <Logo />
+            <Image
+              src="/icons/icon.svg"
+              alt="tennis counter"
+              width={32}
+              height={32}
+              className="dark:opacity-90 group-hover:-translate-y-0.5 duration-300"
+            />
             <p className="font-bold text-inherit">Tennis Counter</p>
           </NextLink>
         </NavbarBrand>
