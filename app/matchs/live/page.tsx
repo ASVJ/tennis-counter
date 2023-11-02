@@ -1,91 +1,143 @@
-"use client";
+'use client'
 
-import { Button } from "@nextui-org/button";
-import { MatchActions } from "@/components/match/match-actions";
-import { MatchCard } from "@/components/match/match-card";
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { title } from "@/components/primitives";
-import { useState } from "react";
+import { MatchCard, MatchLineProps } from '@/components/match/match-card'
 
-const playerOneData = {
-  player: {
-    name: "Alexandre",
-  },
-  sets: [6, 6, 6],
-  currentPoint: "0",
-};
-
-const playerTwoData = {
-  player: {
-    name: "Sacha",
-  },
-  sets: [6, 6, 6],
-  currentPoint: "0",
-};
-
-const PlayerButton = ({
-  player,
-  onClick,
-}: {
-  player: {
-    name: string;
-  };
-  onClick: () => void;
-}) => (
-  <div className="flex flex-col space-y-1 text-center">
-    <span className="inline md:hidden text-sm">{player.name}</span>
-    <Button
-      color="primary"
-      size="sm"
-      className="text-center"
-      onClick={onClick}
-      fullWidth
-    >
-      <PlusIcon className="h-5" /> Score point
-    </Button>
-  </div>
-);
+import { MatchActions } from '@/components/match/match-actions'
+import { MatchAddPoint } from '@/components/match/match-add-point'
+import { Shot } from '@/types/match'
+import { getMatchScoreFromShots } from '@/libs/helpers/match'
+import { title } from '@/components/primitives'
+import { useState } from 'react'
 
 const Page = () => {
-  const [isUndoDisabled, setIsUndoDisabled] = useState(true);
-  const [isRedoDisabled, setIsRedoDisabled] = useState(true);
+    const [currentShotIndex, setCurrentShotIndex] = useState(0)
+    const [matchHistory, setMatchHistory] = useState<Shot[]>([
+        {
+            winner: 'player1',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player1',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player1',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player1',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player1',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player1',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+        {
+            winner: 'player2',
+            timestamp: new Date(),
+        },
+    ])
 
-  const handlePlayerOneClick = () => {};
-  const handlePlayerTwoClick = () => {};
+    const handlePlayerOneClick = () => {
+        const newMatchHistory = [...matchHistory]
+        newMatchHistory.push({
+            winner: 'player1',
+            timestamp: new Date(),
+        })
+        setCurrentShotIndex(newMatchHistory.length)
+        setMatchHistory(newMatchHistory)
+    }
+    const handlePlayerTwoClick = () => {
+        const newMatchHistory = [...matchHistory]
+        newMatchHistory.push({
+            winner: 'player2',
+            timestamp: new Date(),
+        })
+        setCurrentShotIndex(newMatchHistory.length)
+        setMatchHistory(newMatchHistory)
+    }
 
-  const handleUndo = () => {};
-  const handleRedo = () => {};
+    const handleUndo = () => {}
+    const handleRedo = () => {}
 
-  return (
-    <section className="space-y-4 h-full flex flex-col">
-      <h1 className={title()}>Match</h1>
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-2 h-full ">
-        <div className="md:col-span-10 space-y-2">
-          <MatchCard playerOne={playerOneData} playerTwo={playerTwoData} />
-          <MatchActions
-            onRedo={handleRedo}
-            onUndo={handleUndo}
-            redoDisabled={isRedoDisabled}
-            undoDisabled={isUndoDisabled}
-          />
-        </div>
-        <div className="flex flex-row md:flex-col gap-1 justify-end md:col-span-2">
-          <div className="flex-1">
-            <PlayerButton
-              player={playerOneData.player}
-              onClick={handlePlayerOneClick}
-            />
-          </div>
-          <div className="flex-1">
-            <PlayerButton
-              player={playerTwoData.player}
-              onClick={handlePlayerTwoClick}
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+    const isUndoDisabled = matchHistory.length === 0
+    const isRedoDisabled = currentShotIndex === matchHistory.length
 
-export default Page;
+    const currentMatchScore = getMatchScoreFromShots(matchHistory)
+
+    const playerOneLine: MatchLineProps = {
+        player: {
+            name: 'Player 1',
+        },
+        currentPoint: currentMatchScore.currentPoints[0],
+        sets: currentMatchScore.sets.map((set) => set[0]),
+    }
+
+    const playerTwoLine: MatchLineProps = {
+        player: {
+            name: 'Player 2',
+        },
+        currentPoint: currentMatchScore.currentPoints[1],
+        sets: currentMatchScore.sets.map((set) => set[1]),
+    }
+
+    console.log(currentMatchScore)
+
+    return (
+        <section className="space-y-4 h-full flex flex-col">
+            <h1 className={title()}>Match</h1>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-2 h-full md:h-auto">
+                <div className="md:col-span-9 xl:col-span-10 space-y-2">
+                    <MatchCard playerOne={playerOneLine} playerTwo={playerTwoLine} />
+                    <MatchActions onRedo={handleRedo} onUndo={handleUndo} redoDisabled={isRedoDisabled} undoDisabled={isUndoDisabled} />
+                </div>
+                <div className="flex md:block flex-row md:flex-col gap-1 space-y-0 md:space-y-1 justify-end md:col-span-3 xl:col-span-2">
+                    <div className="flex-1 flex items-end">
+                        <MatchAddPoint player={playerOneLine.player} onClick={handlePlayerOneClick} />
+                    </div>
+                    <div className="flex-1 flex items-end">
+                        <MatchAddPoint player={playerTwoLine.player} onClick={handlePlayerTwoClick} />
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+export default Page
